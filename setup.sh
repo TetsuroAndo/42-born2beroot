@@ -1,4 +1,5 @@
 ### mandate part
+usermod -aG sudo $USER
 
 # Setting SSH
 sudo systemctl enable ssh
@@ -16,18 +17,30 @@ sudo ufw status #check
 
 # Setting Password Policy
 sudo sed -i '/retry=3/ s/$/ minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root/' /etc/pam.d/common-password
+# パスワードポリシーの設定:
+# retry=3: トライできる回数
+# minlen=10: パスワードの最小長を10文字に設定
+# ucredit=-1: 少なくとも1つの大文字を必要とする
+# lcredit=-1: 少なくとも1つの小文字を必要とする 
+# dcredit=-1: 少なくとも1つの数字を必要とする
+# maxrepeat=3: 同じ文字の連続使用を3回までに制限
+# reject_username: ユーザー名をパスワードに含めることを禁止
+# difok=7: 新しいパスワードは古いパスワードと7文字以上異なる必要がある
+# enforce_for_root: rootユーザーにもこれらのルールを適用
 
 # Password Expiration Date
-sudo sed -i '/PASS_MAX_DAYS\ts/9999/30/' /etc/login.defs
-sudo sed -i '/PASS_MIN_DAYS\ts/0/2/' /etc/login.defs
+sudo sed -i 's/PASS_MAX_DAYS\t99999/PASS_MAX_DAYS\t30/' /etc/login.defs
+sudo sed -i 's/PASS_MIN_DAYS\t0/PASS_MIN_DAYS\t2/' /etc/login.defs
 
 # グループの作成
 sudo groupadd user42
 # sudo groupadd evaluating
-getent group #check
+# getent group #check
 
 # ユーザーの追加
 #sudo adduser new_username
+#sudo useradd new_username
+#sudo passwd new_username
 
 # グループにユーザーを追加
 sudo usermod -aG user42 $USER
