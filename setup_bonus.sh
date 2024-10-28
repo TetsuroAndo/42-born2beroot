@@ -63,6 +63,7 @@ sudo mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO 'wpuser'@'localhost';"
 sudo mysql -e "FLUSH PRIVILEGES;"
 
 # WordPressのダウンロードと展開
+sudo mkdir -p /var/www/html && \
 cd /var/www/html
 sudo wget https://wordpress.org/latest.tar.gz
 sudo tar -xzvf latest.tar.gz

@@ -54,7 +54,7 @@ chage -l $USER
 #chage -l your_new_username
 
 # sudo log
-sudo mkdir -p /var/log/sudo
+sudo mkdir -p /var/log/sudo && \
 sudo touch /var/log/sudo/sudo.log
 
 # edit /etc/sudoers
