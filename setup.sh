@@ -1,5 +1,7 @@
 ### mandate part
-usermod -aG sudo $USER
+export SUDO_USER_NAME=$USER
+
+sudo usermod -aG sudo $USER
 
 # Setting SSH
 sudo systemctl enable ssh
@@ -52,11 +54,11 @@ chage -l $USER
 #chage -l your_new_username
 
 # sudo log
-mkdir -p /var/log/sudo
-touch /var/log/sudo/sudo.log
+sudo mkdir -p /var/log/sudo
+sudo touch /var/log/sudo/sudo.log
 
 # edit /etc/sudoers
-sudo EDITOR=tee visudo <<EOF
+sudo EDITOR='tee -a' visudo <<EOF
 Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/bin:/sbin:/bin"
 Defaults	badpass_message="Password is wrong, please try again!"
 Defaults	passwd_tries=3
@@ -65,13 +67,7 @@ Defaults	log_input, log_output
 Defaults	requiretty
 EOF
 
-# Setting monitoring.sh
-sudo chmod 750 /usr/local/bin/monitoring.sh
-sudo chown root:root /usr/local/bin/monitoring.sh
-# 1. 所有者（オーナー）: 読み取り(4) + 書き込み(2) + 実行(1) = 7
-# 2. グループ: 読み取り(4) + 実行(1) = 5
-# 3. その他: 権限なし = 0
-sudo mv ./monitoring.sh /usr/local/bin/monitoring.sh
+sudo cp ./monitoring.sh /usr/local/bin/monitoring.sh
 # crontabの設定を読み取り、現在のユーザーのcrontabに追加
 sudo crontab -l > cron
 sudo cat ./crontab-setting.txt >> cron
@@ -79,6 +75,13 @@ sudo crontab cron
 sudo rm cron
 # crontab check
 sudo crontab -l
+
+# Setting monitoring.sh
+sudo chmod 750 /usr/local/bin/monitoring.sh
+sudo chown root:root /usr/local/bin/monitoring.sh
+# 1. 所有者（オーナー）: 読み取り(4) + 書き込み(2) + 実行(1) = 7
+# 2. グループ: 読み取り(4) + 実行(1) = 5
+# 3. その他: 権限なし = 0
 
 # sudoersファイル書き込み monitoring.shの権限設定でパスワードなしでも実行可能にする
 echo "%sudo ALL=(ALL) NOPASSWD: /usr/local/bin/monitoring.sh" | sudo EDITOR='tee -a' visudo
