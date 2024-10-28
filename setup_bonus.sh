@@ -47,8 +47,8 @@ which apache2
 which nginx
 
 # Lighttpdの設定
-sudo lighttpd-enable-mod fastcgi
-sudo lighttpd-enable-mod fastcgi-php
+sudo lighty-enable-mod fastcgi
+sudo lighty-enable-mod fastcgi-php
 sudo service lighttpd force-reload
 # check
 sudo systemctl status lighttpd
