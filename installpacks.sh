@@ -1,4 +1,8 @@
 su
+
+apt-mark hold apache2
+apt-mark hold nginx
+
 apt update && apt upgrade -y && \
 apt install -y sudo wget curl git vim openssh-server ufw libpam-pwquality lvm2 cron net-tools
 
