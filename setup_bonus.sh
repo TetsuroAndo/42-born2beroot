@@ -85,7 +85,7 @@ define('DB_NAME', 'wordpress');\n\
 define('DB_USER', 'wpuser');\n\
 define('DB_PASSWORD', 'Password-Is-42');" /var/www/html/wordpress/wp-config.php
 
-# web server
+# routing server
 SERVER_IP_ADDRESS=$(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1' | head -n1)
 sudo tee /etc/lighttpd/conf-available/10-wordpress.conf > /dev/null <<EOL
 \$HTTP["host"] == "$SERVER_IP_ADDRESS" {

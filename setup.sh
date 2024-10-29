@@ -1,7 +1,7 @@
 ### mandate part
 export SUDO_USER_NAME=$USER
 
-sudo usermod -aG sudo $USER
+sudo usermod -aG sudo $SUDO_USER_NAME
 
 # Setting SSH
 sudo systemctl enable ssh
@@ -45,12 +45,12 @@ sudo groupadd user42
 #sudo passwd new_username
 
 # グループにユーザーを追加
-sudo usermod -aG user42 $USER
+sudo usermod -aG user42 $SUDO_USER_NAME
 #sudo usermod -aG evaluating $USER
 groups #check
 
 # check if the password rules
-chage -l $USER
+chage -l $SUDO_USER_NAME
 #chage -l your_new_username
 
 # sudo log
@@ -68,16 +68,13 @@ Defaults	requiretty
 EOF
 
 sudo cp ./monitoring.sh /usr/local/bin/monitoring.sh
-# crontabの設定を読み取り、現在のユーザーのcrontabに追加
-sudo crontab -l > cron
-sudo cat ./crontab-setting.txt >> cron
-sudo crontab cron
-sudo rm cron
+# crontab setting
+crontab -e
 # crontab check
-sudo crontab -l
+crontab -l
 
 # Setting monitoring.sh
-sudo chmod 750 /usr/local/bin/monitoring.sh
+sudo chmod 755 /usr/local/bin/monitoring.sh
 sudo chown root:root /usr/local/bin/monitoring.sh
 # 1. 所有者（オーナー）: 読み取り(4) + 書き込み(2) + 実行(1) = 7
 # 2. グループ: 読み取り(4) + 実行(1) = 5
