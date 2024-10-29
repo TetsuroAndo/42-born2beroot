@@ -1,5 +1,7 @@
 ### Bonus part
 
+export SUDO_USER_NAME=$USER
+
 # Partition setting image
 # NAME                        MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINTS
 # sda                           8:0    0 32.6G  0 disk  
@@ -7,31 +9,31 @@
 # ├─sda2                        8:2    0    1K  0 part  
 # └─sda5                        8:5    0 32.1G  0 part  
 #   └─sda5_crypt              254:0    0 32.1G  0 crypt 
-#     ├─teando42--vg-root     254:1    0  3.9G  0 lvm   /
-#     ├─teando42--vg-var      254:2    0  1.6G  0 lvm   /var
-#     ├─teando42--vg-swap_1   254:3    0  976M  0 lvm   [SWAP]
-#     ├─teando42--vg-tmp      254:4    0  356M  0 lvm   /tmp
-#     ├─teando42--vg-home     254:5    0 11.9G  0 lvm   /home
-#     ├─teando42--vg-srv      254:6    0    5G  0 lvm   /srv
-#     └─teando42--vg-var--log 254:7    0    5G  0 lvm   /var/log
+#     ├─${SUDO_USER_NAME}42--vg-root     254:1    0  3.9G  0 lvm   /
+#     ├─${SUDO_USER_NAME}42--vg-var      254:2    0  1.6G  0 lvm   /var
+#     ├─${SUDO_USER_NAME}42--vg-swap_1   254:3    0  976M  0 lvm   [SWAP]
+#     ├─${SUDO_USER_NAME}42--vg-tmp      254:4    0  356M  0 lvm   /tmp
+#     ├─${SUDO_USER_NAME}42--vg-home     254:5    0 11.9G  0 lvm   /home
+#     ├─${SUDO_USER_NAME}42--vg-srv      254:6    0    5G  0 lvm   /srv
+#     └─${SUDO_USER_NAME}42--vg-var--log 254:7    0    5G  0 lvm   /var/log
 # sr0                          11:0    1 1024M  0 rom   
 
 # /srv
-sudo lvcreate -L 5G -n srv teando42-vg
+sudo lvcreate -L 5G -n srv ${SUDO_USER_NAME}42-vg
 # /var/log
-sudo lvcreate -L 5G -n var-log teando42-vg
+sudo lvcreate -L 5G -n var-log ${SUDO_USER_NAME}42-vg
 
 # create file system
-sudo mkfs.ext4 /dev/teando42-vg/srv
-sudo mkfs.ext4 /dev/teando42-vg/var-log
+sudo mkfs.ext4 /dev/${SUDO_USER_NAME}42-vg/srv
+sudo mkfs.ext4 /dev/${SUDO_USER_NAME}42-vg/var-log
 
 # create mount point
 sudo mkdir -p /srv
 sudo mkdir -p /var/log
 
 # /etc/fstabに追加するエントリ
-echo "/dev/mapper/teando42--vg-srv /srv ext4 defaults 0 2" | sudo tee -a /etc/fstab
-echo "/dev/mapper/teando42--vg-var--log /var/log ext4 defaults 0 2" | sudo tee -a /etc/fstab
+echo "/dev/mapper/${SUDO_USER_NAME}42--vg-srv /srv ext4 defaults 0 2" | sudo tee -a /etc/fstab
+echo "/dev/mapper/${SUDO_USER_NAME}42--vg-var--log /var/log ext4 defaults 0 2" | sudo tee -a /etc/fstab
 
 # mount new partition
 sudo mount -a
