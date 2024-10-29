@@ -28,6 +28,8 @@ sudo sed -i '/retry=3/ s/$/ minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat
 # maxrepeat=3: 同じ文字の連続使用を3回までに制限
 # reject_username: ユーザー名をパスワードに含めることを禁止
 # difok=7: 新しいパスワードは古いパスワードと7文字以上異なる必要がある
+# 	rootユーザーは古いパスワードはチェックされない。
+#	https://stackoverflow.com/questions/72362666/pam-cracklib-not-enforcing-difok-for-root-even-with-enforce-for-root-option
 # enforce_for_root: rootユーザーにもこれらのルールを適用
 
 # Password Expiration Date
