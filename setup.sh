@@ -59,7 +59,7 @@ sudo touch /var/log/sudo/sudo.log
 
 # edit /etc/sudoers
 sudo EDITOR='tee -a' visudo <<EOF
-Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/bin:/sbin:/bin"
+Defaults	secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 Defaults	badpass_message="Password is wrong, please try again!"
 Defaults	passwd_tries=3
 Defaults	logfile="/var/log/sudo/sudo.log"
