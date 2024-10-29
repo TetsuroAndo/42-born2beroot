@@ -1,4 +1,4 @@
-# su
+# su -
 
 apt-mark hold apache2
 apt-mark hold nginx
@@ -33,3 +33,4 @@ apt install -y 	lighttpd \            # 軽量なWebサーバー
 source /etc/profile
 # visudo
 # YOU_USERNAME ALL=(ALL) ALL
+# usermod -aG sudo YOU_USERNAME
