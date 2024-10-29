@@ -34,6 +34,10 @@ sudo sed -i '/retry=3/ s/$/ minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat
 sudo sed -i 's/PASS_MAX_DAYS\t99999/PASS_MAX_DAYS\t30/' /etc/login.defs
 sudo sed -i 's/PASS_MIN_DAYS\t0/PASS_MIN_DAYS\t2/' /etc/login.defs
 
+# 既存のユーザーの Expiration Date
+sudo chage --maxdays 30 --mindays 2 root
+sudo chage --maxdays 30 --mindays 2 $SUDO_USER_NAME
+
 # グループの作成
 sudo groupadd user42
 # sudo groupadd evaluating
