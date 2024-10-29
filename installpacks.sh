@@ -29,7 +29,7 @@ apt install -y 	lighttpd \            # 軽量なWebサーバー
                 php-cgi \             # PHPのCGI実行モジュール
                 php-fpm               # PHPのFastCGIプロセスマネージャー
 
-# Debianでvisudoはsudoパッケージの一部だが、インストール直後にパスが正しく認識されていない可能性があり
+# sudoパッケージのパスを読み込む
 source /etc/profile
 # visudo
 # YOU_USERNAME ALL=(ALL) ALL
