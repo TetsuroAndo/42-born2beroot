@@ -176,6 +176,7 @@
 
 ### セキュリティ設定の重要性
 
+- Switch to unix_socket authentication
 - root パスワードの設定
 - 匿名ユーザーの削除
 - リモート root ログインの禁止

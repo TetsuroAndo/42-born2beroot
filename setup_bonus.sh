@@ -2,19 +2,19 @@
 
 # Partition setting image
 # NAME                        MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINTS
-# sr0                          11:0    1 1024M  0 rom
-# vda                         254:0    0   32G  0 disk
-# ├─vda1                      254:1    0  512M  0 part  /boot/efi
-# ├─vda2                      254:2    0  488M  0 part  /boot
-# └─vda3                      254:3    0   31G  0 part
-#   └─vda3_crypt              253:0    0   31G  0 crypt
-#     ├─teando42--vg-root     253:1    0  6.1G  0 lvm   /
-#     ├─teando42--vg-var      253:2    0  2.4G  0 lvm   /var
-#     ├─teando42--vg-swap_1   253:3    0  976M  0 lvm   [SWAP]
-#     ├─teando42--vg-tmp      253:4    0  484M  0 lvm   /tmp
-#     ├─teando42--vg-home     253:5    0 11.1G  0 lvm   /home
-#     ├─teando42--vg-srv      253:6    0    3G  0 lvm   /srv
-#     └─teando42--vg-var--log 253:7    0    4G  0 lvm   /var/log
+# sda                           8:0    0 32.6G  0 disk  
+# ├─sda1                        8:1    0  487M  0 part  /boot
+# ├─sda2                        8:2    0    1K  0 part  
+# └─sda5                        8:5    0 32.1G  0 part  
+#   └─sda5_crypt              254:0    0 32.1G  0 crypt 
+#     ├─teando42--vg-root     254:1    0  3.9G  0 lvm   /
+#     ├─teando42--vg-var      254:2    0  1.6G  0 lvm   /var
+#     ├─teando42--vg-swap_1   254:3    0  976M  0 lvm   [SWAP]
+#     ├─teando42--vg-tmp      254:4    0  356M  0 lvm   /tmp
+#     ├─teando42--vg-home     254:5    0 11.9G  0 lvm   /home
+#     ├─teando42--vg-srv      254:6    0    5G  0 lvm   /srv
+#     └─teando42--vg-var--log 254:7    0    5G  0 lvm   /var/log
+# sr0                          11:0    1 1024M  0 rom   
 
 # /srv
 sudo lvcreate -L 5G -n srv teando42-vg
@@ -79,7 +79,6 @@ sudo cp wp-config-sample.php wp-config.php
 sudo sed -i "s/database_name_here/wordpress/" wp-config.php
 sudo sed -i "s/username_here/wpuser/" wp-config.php
 sudo sed -i "s/password_here/Password-Is-42/" wp-config.php
-
 sudo sed -i "/DB_HOST/a\
 define('DB_NAME', 'wordpress');\n\
 define('DB_USER', 'wpuser');\n\
@@ -88,21 +87,11 @@ define('DB_PASSWORD', 'Password-Is-42');" /var/www/html/wordpress/wp-config.php
 # routing server
 SERVER_IP_ADDRESS=$(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1' | head -n1)
 sudo tee /etc/lighttpd/conf-available/10-wordpress.conf > /dev/null <<EOL
-\$HTTP["host"] == "$SERVER_IP_ADDRESS" {
-    var.docroot = "/var/www/html/wordpress"
-    server.document-root = var.docroot
-    server.indexfiles    = ("index.php", "index.html")
-
-    fastcgi.server += ( ".php" =>
-        ((
-            "socket" => "/var/run/php/php-fpm.sock",
-            "broken-scriptfilename" => "enable"
-        ))
-    )
-}
+\$HTTP["host"] == "$SERVER_IP_ADDRESS" {}
 EOL
 
 sudo ln -s /etc/lighttpd/conf-available/10-wordpress.conf /etc/lighttpd/conf-enabled/
+sudo sed -i 's|server.document-root        = "/var/www/html/"|server.document-root        = "/var/www/html/wordpress"|g' /etc/lighttpd/lighttpd.conf
 sudo lighttpd -t -f /etc/lighttpd/lighttpd.conf
 
 # service start and reload
@@ -110,7 +99,6 @@ sudo systemctl enable php8.2-fpm
 sudo systemctl start php8.2-fpm
 sudo systemctl restart php8.2-fpm
 sudo systemctl status php8.2-fpm
-
 sudo service lighttpd restart
 sudo service lighttpd status
 
