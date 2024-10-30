@@ -111,4 +111,4 @@ sudo service lighttpd status
 # what is wireguard: https://www.youtube.com/watch?v=grDEBt7oQho
 
 # Install and Auth
-curl -fsSL https://tailscale.com/install.sh | sh
+sudo curl -fsSL https://tailscale.com/install.sh | sh

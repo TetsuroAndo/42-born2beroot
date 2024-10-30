@@ -16,6 +16,7 @@ sudo systemctl restart sshd
 sudo ufw limit 4242
 sudo ufw enable
 sudo ufw status #check
+# ufw status numbered
 
 # Setting Password Policy
 sudo sed -i '/retry=3/ s/$/ minlen=10 ucredit=-1 lcredit=-1 dcredit=-1 maxrepeat=3 reject_username difok=7 enforce_for_root/' /etc/pam.d/common-password
